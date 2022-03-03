@@ -6,8 +6,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { hasRoles } from 'src/auth/decorator/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { UserRole } from '../models/user-roles.enum';
 import { User } from '../models/user.interface';
 import { UserService } from '../service/user.service';
 
@@ -49,5 +54,15 @@ export class UserController {
   @Put(':id')
   async updateOne(@Param('id') id: string, @Body() user: User): Promise<any> {
     return await this.userService.updateOne(Number(id), user);
+  }
+
+  @hasRoles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Put(':id/role')
+  async updateRoleOfUser(
+    @Param('id') id: string,
+    @Body() user: User,
+  ): Promise<User> {
+    return this.userService.updateRoleOfUser(Number(id), user);
   }
 }

@@ -31,6 +31,7 @@ export class UserService {
       username: userData.username,
       email: userData.email,
       password: passwordHash,
+      roles: userData.roles,
     });
     const createdUser: User = await this.userRepository.save(user);
     delete createdUser.password;
@@ -52,6 +53,10 @@ export class UserService {
   async updateOne(id: number, user: User): Promise<any> {
     delete user.email;
     delete user.password;
+    return this.userRepository.update(id, user);
+  }
+
+  async updateRoleOfUser(id: number, user: User): Promise<any> {
     return this.userRepository.update(id, user);
   }
 
@@ -87,7 +92,7 @@ export class UserService {
 
   async findByEmailLogin(userEmail: string): Promise<User> {
     const user = await getRepository(UserEntity).findOne({
-      select: ['id', 'name', 'username', 'email', 'password'],
+      select: ['id', 'name', 'username', 'email', 'password', 'roles'],
       where: { email: userEmail },
     });
     return user;
