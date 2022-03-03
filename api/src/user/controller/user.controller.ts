@@ -15,28 +15,39 @@ import { UserService } from '../service/user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Post('login')
+  async login(@Body() user: User): Promise<Object> {
+    return await this.userService.login(user);
+  }
+
   @Post()
-  create(@Body() user: User): Observable<User> {
-    return this.userService.create(user);
+  async create(@Body() user: User): Promise<User> {
+    return await this.userService.create(user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Observable<User> {
-    return this.userService.findOne(Number(id));
+  async findOne(@Param('id') id: string): Promise<User> {
+    return await this.userService.findOne(Number(id));
   }
 
   @Get()
-  findAll(): Observable<User[]> {
-    return this.userService.findAll();
+  async findAll(): Promise<User[]> {
+    return await this.userService.findAll();
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string): Observable<any> {
-    return this.userService.deleteOne(Number(id));
+  async deleteOne(@Param('id') id: string): Promise<any> {
+    return await this.userService.deleteOne(Number(id));
   }
 
+  /**
+   * Update one User
+   * @param id - User's id
+   * @param user - new user data
+   * @returns
+   */
   @Put(':id')
-  updateOne(@Param('id') id: string, @Body() user: User): Observable<any> {
-    return this.userService.updateOne(Number(id), user);
+  async updateOne(@Param('id') id: string, @Body() user: User): Promise<any> {
+    return await this.userService.updateOne(Number(id), user);
   }
 }
