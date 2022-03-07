@@ -1,20 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  catchError,
-  first,
-  firstValueFrom,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from 'rxjs';
 import { AuthService } from 'src/auth/services/auth.service';
 import { getRepository, Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { User } from '../models/user.interface';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
+import { UserRole } from '../models/user-roles.enum';
 
 @Injectable()
 export class UserService {
@@ -31,7 +26,7 @@ export class UserService {
       username: userData.username,
       email: userData.email,
       password: passwordHash,
-      roles: userData.roles,
+      roles: [UserRole.USER],
     });
     const createdUser: User = await this.userRepository.save(user);
     delete createdUser.password;
@@ -46,6 +41,10 @@ export class UserService {
     return this.userRepository.find();
   }
 
+  async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
+    return paginate<User>(this.userRepository, options);
+  }
+
   async deleteOne(id: number): Promise<any> {
     return this.userRepository.delete(id);
   }
@@ -53,6 +52,7 @@ export class UserService {
   async updateOne(id: number, user: User): Promise<any> {
     delete user.email;
     delete user.password;
+    delete user.roles;
     return this.userRepository.update(id, user);
   }
 
