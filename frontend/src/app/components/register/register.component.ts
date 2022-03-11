@@ -3,11 +3,35 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, Observable, pipe } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+
+class CustomValidators {
+  static passwordContainsNumber(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const regex = /\d/;
+    if (regex.test(control.value) && control.value !== null) {
+      return null;
+    } else {
+      return { passwordLacksNumber: true };
+    }
+  }
+
+  static passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const passwordConfirm = control.get('passwordConfirm')?.value;
+    if (password === passwordConfirm) {
+      return null;
+    } else {
+      return { passwordsNotMatching: true };
+    }
+  }
+}
 
 @Component({
   selector: 'app-register',
@@ -78,6 +102,7 @@ export class RegisterComponent implements OnInit {
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(50),
+            CustomValidators.passwordContainsNumber,
           ],
         ],
         passwordConfirm: [
@@ -90,7 +115,7 @@ export class RegisterComponent implements OnInit {
         ],
       },
       {
-        // validators: CustomValidators.passwordMatches
+        validators: CustomValidators.passwordsMatch,
       }
     );
   }

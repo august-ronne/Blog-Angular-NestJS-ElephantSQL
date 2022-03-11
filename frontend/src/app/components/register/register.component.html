@@ -43,3 +43,11 @@
     </button>
   </div>
 </form>
+<h3 *ngIf="registerForm.invalid">Form contains following errors:</h3>
+<small *ngIf="form['password'].hasError('passwordLacksNumber')"
+  >Password does not contain a number.</small
+>
+<br />
+<small *ngIf="registerForm.hasError('passwordsNotMatching')"
+  >Passwords do not match.</small
+>
