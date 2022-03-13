@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/services/auth.service';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { User } from '../models/user.interface';
 import {
@@ -43,6 +43,38 @@ export class UserService {
 
   async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
     return paginate<User>(this.userRepository, options);
+  }
+
+  async paginateFilterByUsername(
+    options: IPaginationOptions,
+    user: User,
+  ): Promise<Pagination<User>> {
+    const [users, totalUsers] = await this.userRepository.findAndCount({
+      skip: Number(options.page) * Number(options.limit) || 0,
+      take: Number(options.limit) || 10,
+      order: { id: 'ASC' },
+      select: ['id', 'name', 'username', 'email', 'roles'],
+      where: [{ username: Like(`%${user.username}%`) }],
+    });
+    const nextPage = Number(options.page) + 1;
+    const lastPage = Math.ceil(Number(totalUsers) / Number(options.page));
+    const usersPageable: Pagination<User> = {
+      items: users,
+      links: {
+        first: options.route + `?limit=${options.limit}`,
+        previous: options.route + ``,
+        next: options.route + `?limit=${options.limit}&page=${nextPage}`,
+        last: options.route + `?limit=${options.limit}&page=${lastPage}`,
+      },
+      meta: {
+        currentPage: Number(options.page),
+        itemCount: users.length,
+        itemsPerPage: Number(options.limit),
+        totalItems: totalUsers,
+        totalPages: Math.ceil(Number(totalUsers) / Number(options.limit)),
+      },
+    };
+    return usersPageable;
   }
 
   async deleteOne(id: number): Promise<any> {

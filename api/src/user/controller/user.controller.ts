@@ -38,6 +38,7 @@ export class UserController {
   }
 
   /**
+   * REPLACED WITH GET: index()
    * Returns all Users registered in the database
    * @returns array of User objects
    */
@@ -50,13 +51,25 @@ export class UserController {
   index(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
+    @Query('username') username: string,
   ): Promise<Pagination<User>> {
     limit = limit > 100 ? 100 : limit;
-    return this.userService.paginate({
-      page: Number(page),
-      limit: Number(limit),
-      route: 'http://localhost:3000/api/users',
-    });
+    if (username === null || username === undefined) {
+      return this.userService.paginate({
+        page: Number(page),
+        limit: Number(limit),
+        route: 'http://localhost:3000/api/users',
+      });
+    } else {
+      return this.userService.paginateFilterByUsername(
+        {
+          page: Number(page),
+          limit: Number(limit),
+          route: 'http://localhost:3000/api/users',
+        },
+        { username },
+      );
+    }
   }
 
   @Delete(':id')
