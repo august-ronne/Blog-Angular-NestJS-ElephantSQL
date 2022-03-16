@@ -40,6 +40,20 @@ export class UserService {
     );
   }
 
+  paginateByName(
+    page: number,
+    size: number,
+    username: string
+  ): Observable<UserData> {
+    const params = new HttpParams()
+      .set('page', String(page))
+      .set('limit', String(size))
+      .set('username', username);
+    return this.http
+      .get('/api/users', { params })
+      .pipe(map((userData: UserData) => userData));
+  }
+
   private handleError(err: HttpErrorResponse): Observable<never> {
     return throwError(() => err);
   }

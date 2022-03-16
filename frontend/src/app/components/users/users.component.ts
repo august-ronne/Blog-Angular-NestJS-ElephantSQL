@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { map, pipe, tap } from 'rxjs';
+import { filter, map, pipe, tap } from 'rxjs';
 import { UserData, UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class UsersComponent implements OnInit {
   dataSource: UserData = {};
   pageEvent: PageEvent = new PageEvent();
   columnsToDisplay: string[] = ['id', 'name', 'username', 'email', 'role'];
+  filterValue: string = '';
 
   constructor(private userService: UserService) {}
 
@@ -29,8 +30,23 @@ export class UsersComponent implements OnInit {
   onPaginateChange(event: PageEvent): void {
     const page = event.pageIndex + 1;
     const size = event.pageSize;
+    if (this.filterValue === '') {
+      this.userService
+        .findAll(page, size)
+        .pipe(map((userData: UserData) => (this.dataSource = userData)))
+        .subscribe();
+    } else {
+      this.userService
+        .paginateByName(page - 1, size, this.filterValue)
+        .pipe(map((userData: UserData) => (this.dataSource = userData)))
+        .subscribe();
+    }
+  }
+
+  findByName(username: string): void {
+    console.log(username);
     this.userService
-      .findAll(page, size)
+      .paginateByName(0, 5, username)
       .pipe(map((userData: UserData) => (this.dataSource = userData)))
       .subscribe();
   }
