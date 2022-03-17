@@ -12,7 +12,7 @@
 </mat-form-field>
 
 <div *ngIf="dataSource.items">
-  <mat-table [dataSource]="dataSource.items | async">
+  <mat-table [dataSource]="dataSource.items">
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
     <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
 

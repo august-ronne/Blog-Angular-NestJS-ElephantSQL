@@ -10,7 +10,6 @@ import { UserData, UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  // this is not the 'develop' branch
   dataSource: UserData = {};
   pageEvent: PageEvent = new PageEvent();
   columnsToDisplay: string[] = ['id', 'name', 'username', 'email', 'role'];
