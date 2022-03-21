@@ -1,3 +1,7 @@
 {
-    "baseUrl": "http://localhost:4200"
+    "baseUrl": "http://localhost:4200",
+    "reporter": "cypress-multi-reporters",
+    "reporterOptions": {
+        "configFile": "reporter.json"
+    }
 }
