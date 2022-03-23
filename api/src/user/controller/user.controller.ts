@@ -25,6 +25,7 @@ import { UserRole } from '../models/user-roles.enum';
 import { User } from '../models/user.interface';
 import { UserService } from '../service/user.service';
 import { join } from 'path';
+import { UserIsUserGuard } from 'src/auth/guards/user-is-user.guard';
 
 export const storage = {
   storage: diskStorage({
@@ -97,12 +98,7 @@ export class UserController {
     return await this.userService.deleteOne(Number(id));
   }
 
-  /**
-   * Update one User
-   * @param id - User's id
-   * @param user - new user data
-   * @returns
-   */
+  @UseGuards(JwtAuthGuard, UserIsUserGuard)
   @Put(':id')
   async updateOne(@Param('id') id: string, @Body() user: User): Promise<any> {
     return await this.userService.updateOne(Number(id), user);
