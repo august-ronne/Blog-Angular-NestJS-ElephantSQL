@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/services/auth.service';
 import { getRepository, Like, Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import {
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { UserRole } from '../models/user-roles.enum';
+import * as path from 'path';
 
 @Injectable()
 export class UserService {
@@ -85,7 +86,8 @@ export class UserService {
     delete user.email;
     delete user.password;
     delete user.roles;
-    return this.userRepository.update(id, user);
+    await this.userRepository.update(id, user);
+    return this.userRepository.findOne(id);
   }
 
   async updateRoleOfUser(id: number, user: User): Promise<any> {
@@ -128,5 +130,14 @@ export class UserService {
       where: { email: userEmail },
     });
     return user;
+  }
+
+  async getProfileImage(
+    imageFileName: string,
+    @Res() responseSender,
+  ): Promise<Object> {
+    return responseSender.sendFile(
+      path.join(process.cwd(), 'uploads/profileimages/' + imageFileName),
+    );
   }
 }
