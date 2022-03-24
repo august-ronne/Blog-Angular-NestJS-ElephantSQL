@@ -14,6 +14,7 @@ export interface User {
   role?: string;
   password?: string;
   passwordConfirm?: string;
+  profileImage?: string;
 }
 
 @Injectable({

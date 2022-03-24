@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
 
 /**
  * Component Imports
@@ -26,6 +27,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UsersComponent } from './components/users/users.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { UsersComponent } from './components/users/users.component';
     LoginComponent,
     RegisterComponent,
     UsersComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { UsersComponent } from './components/users/users.component';
     MatSelectModule,
     MatTableModule,
     MatPaginatorModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

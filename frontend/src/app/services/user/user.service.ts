@@ -30,6 +30,12 @@ export interface UserData {
 export class UserService {
   constructor(private http: HttpClient) {}
 
+  findOne(id: number): Observable<User> {
+    const apiString: string = '/api/users/' + id;
+    console.log(apiString);
+    return this.http.get<User>(apiString).pipe(map((user: User) => user));
+  }
+
   findAll(page: number, size: number): Observable<UserData> {
     const params = new HttpParams()
       .set('page', String(page))
