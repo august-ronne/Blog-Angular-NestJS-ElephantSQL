@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface LoginForm {
   email: string;
@@ -17,11 +18,17 @@ export interface User {
   profileImage?: string;
 }
 
+export const JWT_NAME = 'blog-token';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+
+  getUserToken(): string | null {
+    return localStorage.getItem(JWT_NAME);
+  }
 
   login(loginForm: LoginForm): Observable<string> {
     return this.http
@@ -31,7 +38,7 @@ export class AuthenticationService {
       })
       .pipe(
         map((token) => {
-          localStorage.setItem('blog-token', token.access_token);
+          localStorage.setItem(JWT_NAME, token.access_token);
           return token;
         })
       );
@@ -39,5 +46,11 @@ export class AuthenticationService {
 
   register(user: User): Observable<User> {
     return this.http.post<any>('/api/users/', user).pipe(map((user) => user));
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem(JWT_NAME);
+    if (token) return !this.jwtHelper.isTokenExpired(token);
+    return false;
   }
 }

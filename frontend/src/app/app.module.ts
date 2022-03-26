@@ -5,8 +5,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+/**
+ * External Modules (not authored by AngularJS)
+ */
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 /**
  * Angular Materials Imports
@@ -21,13 +26,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 
 /**
- * Component Imports
+ * Component, Guard, and Interceptor Imports
  */
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UsersComponent } from './components/users/users.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UpdateUserProfileComponent } from './components/update-user-profile/update-user-profile.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,6 +43,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     RegisterComponent,
     UsersComponent,
     UserProfileComponent,
+    UpdateUserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +62,11 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     MatPaginatorModule,
     MatCardModule,
   ],
-  providers: [],
+  providers: [
+    JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
