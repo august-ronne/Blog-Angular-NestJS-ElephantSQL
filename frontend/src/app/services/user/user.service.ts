@@ -32,7 +32,6 @@ export class UserService {
 
   findOne(id: number): Observable<User> {
     const apiString: string = '/api/users/' + id;
-    console.log(apiString);
     return this.http.get<User>(apiString).pipe(map((user: User) => user));
   }
 
@@ -44,6 +43,11 @@ export class UserService {
       map((userData: UserData) => userData),
       catchError(this.handleError)
     );
+  }
+
+  updateOne(user: User): Observable<User> {
+    const apiString: string = 'api/users/' + user.id;
+    return this.http.put<User>(apiString, user);
   }
 
   paginateByName(
