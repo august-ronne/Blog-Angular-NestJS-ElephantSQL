@@ -5,7 +5,6 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { User } from 'src/user/models/user.interface';
 import { UserService } from 'src/user/service/user.service';
 
@@ -18,7 +17,7 @@ export class UserIsUserGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const params = request.params;
-    const requestJwtUser: User = request.user.user;
+    const requestJwtUser: User = request.user;
     const databaseUser = await this.userService.findOne(requestJwtUser.id);
     return databaseUser.id === Number(params.id);
   }

@@ -24,7 +24,6 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserRole } from '../models/user-roles.enum';
 import { User } from '../models/user.interface';
 import { UserService } from '../service/user.service';
-import { join } from 'path';
 import { UserIsUserGuard } from 'src/auth/guards/user-is-user.guard';
 
 export const storage = {
@@ -54,7 +53,7 @@ export class UserController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Request() req): Promise<User> {
+  async findOne(@Param('id') id: string): Promise<User> {
     return await this.userService.findOne(Number(id));
   }
 
@@ -93,6 +92,8 @@ export class UserController {
     }
   }
 
+  @hasRoles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async deleteOne(@Param('id') id: string): Promise<any> {
     return await this.userService.deleteOne(Number(id));
@@ -121,7 +122,7 @@ export class UserController {
     @Request() req,
     @UploadedFile() file,
   ): Promise<Object> {
-    const user: User = req.user.user;
+    const user: User = req.user;
     return await this.userService.updateOne(user.id, {
       profileImage: file.filename,
     });

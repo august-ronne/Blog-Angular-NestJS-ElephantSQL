@@ -21,6 +21,15 @@ export class BlogService {
     return this.blogRepository.save(blogEntry);
   }
 
+  async updateOne(id: number, blogEntry: BlogEntry): Promise<BlogEntry> {
+    await this.blogRepository.update(id, blogEntry);
+    return this.findOne(id);
+  }
+
+  async deleteOne(id: number): Promise<any> {
+    return this.blogRepository.delete(id);
+  }
+
   async findOne(id: number): Promise<BlogEntry> {
     return this.blogRepository.findOne({ id }, { relations: ['author'] });
   }

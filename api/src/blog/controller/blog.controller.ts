@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { BlogEntry } from '../ model/blog-entry.interface';
+import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
 import { BlogService } from '../service/blog.service';
 
 @Controller('blogs')
@@ -22,8 +25,26 @@ export class BlogController {
     @Body() blogEntry: BlogEntry,
     @Request() req,
   ): Promise<BlogEntry> {
-    const user = req.user.user;
+    const user = req.user;
     return this.blogService.createBlogEntry(user, blogEntry);
+  }
+
+  @UseGuards(JwtAuthGuard, UserIsAuthorGuard)
+  @Put(':id')
+  async updateOneBlogEntry(
+    @Param('id') blogEntryId: number,
+    @Body() updatedBlogEntry: BlogEntry,
+  ): Promise<BlogEntry> {
+    return await this.blogService.updateOne(
+      Number(blogEntryId),
+      updatedBlogEntry,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard, UserIsAuthorGuard)
+  @Delete(':id')
+  async deleteOneBlogEntry(@Param('id') blogEntryId): Promise<any> {
+    return await this.blogService.deleteOne(blogEntryId);
   }
 
   @Get()
