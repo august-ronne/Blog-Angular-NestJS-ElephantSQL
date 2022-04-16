@@ -24,6 +24,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * Component, Guard, and Interceptor Imports
@@ -61,6 +63,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
+    MatProgressBarModule,
+    MatIconModule,
   ],
   providers: [
     JwtHelperService,

@@ -1,17 +1,49 @@
 <form [formGroup]="form" (ngSubmit)="updateUserProfile()">
   <div>
     <mat-card class="container">
-      <mat-form-field>
-        <input matInput placeholder="ID" formControlName="id" />
-      </mat-form-field>
+      <div style="width: 80%">
+        <mat-card>
+          <mat-card-content>
+            <img
+              *ngIf="form.get('profileImage')?.value"
+              src="http://localhost:3000/api/users/get-profile-image/{{
+                form.get('profileImage')?.value
+              }}"
+            />
+            <ul>
+              <li>
+                <mat-progress-bar [value]="file.progress"></mat-progress-bar>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="warn" (click)="onClickUploadImage()">
+              <mat-icon>cloud_upload</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <input
+          type="file"
+          #fileUpload
+          id="fileUpload"
+          name="fileUpload"
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+      <div class="container" style="width: 80%">
+        <mat-form-field>
+          <input matInput placeholder="ID" formControlName="id" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name" />
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput placeholder="Username" formControlName="username" />
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Username" formControlName="username" />
+        </mat-form-field>
+      </div>
 
       <p>
         To change the password and email properties a more complicated

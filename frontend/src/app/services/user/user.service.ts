@@ -50,6 +50,17 @@ export class UserService {
     return this.http.put<User>(apiString, user);
   }
 
+  uploadProfileImage(formData: FormData): Observable<any> {
+    return this.http.post<FormData>(
+      'api/users/upload-profile-image',
+      formData,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
+  }
+
   paginateByName(
     page: number,
     size: number,
