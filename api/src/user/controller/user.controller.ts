@@ -16,8 +16,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import * as path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -25,6 +23,8 @@ import { UserRole } from '../models/user-roles.enum';
 import { User } from '../models/user.interface';
 import { UserService } from '../service/user.service';
 import { UserIsUserGuard } from 'src/auth/guards/user-is-user.guard';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
 
 export const storage = {
   storage: diskStorage({

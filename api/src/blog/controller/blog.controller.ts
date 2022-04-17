@@ -8,14 +8,34 @@ import {
   Put,
   Query,
   Request,
+  Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { User } from 'src/user/models/user.interface';
 import { BlogEntry } from '../ model/blog-entry.interface';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
 import { BlogService } from '../service/blog.service';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
+import { HeaderImage } from '../ model/header-image.interface';
 
 export const BLOG_ENTRIES_URL = 'http://localhost:3000/api/blog-entries';
+export const storage = {
+  storage: diskStorage({
+    destination: './uploads/blog-entry-header-images',
+    filename: (req, file, cb) => {
+      const filename: string =
+        path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      const extension: string = path.parse(file.originalname).ext;
+      cb(null, `${filename}${extension}`);
+    },
+  }),
+};
 
 @Controller('blog-entries')
 export class BlogController {
@@ -97,5 +117,23 @@ export class BlogController {
   @Get(':id')
   async findOneBlogEntry(@Param('id') id: number): Promise<BlogEntry> {
     return await this.blogService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('image/upload')
+  @UseInterceptors(FileInterceptor('file', storage))
+  async uploadBlogEntryHeaderImage(
+    @Request() req,
+    @UploadedFile() file,
+  ): Promise<HeaderImage> {
+    return file;
+  }
+
+  @Get('image/:imagename')
+  async getBlogEntryHeaderImage(
+    @Param('imagename') imagename: string,
+    @Res() res,
+  ): Promise<Object> {
+    return await this.blogService.getHeaderImage(imagename, res);
   }
 }

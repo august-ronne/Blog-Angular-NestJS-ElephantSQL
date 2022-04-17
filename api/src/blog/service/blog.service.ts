@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaginationOptions,
@@ -11,6 +11,8 @@ import { UserService } from 'src/user/service/user.service';
 import { Repository } from 'typeorm';
 import { BlogEntryEntity } from '../ model/blog-entry.entity';
 import { BlogEntry } from '../ model/blog-entry.interface';
+
+import * as path from 'path';
 const slugify = require('slugify');
 
 @Injectable()
@@ -67,6 +69,18 @@ export class BlogService {
       where: { author: userId },
       relations: ['author'],
     });
+  }
+
+  async getHeaderImage(
+    imageFileName: string,
+    @Res() responseSender,
+  ): Promise<Object> {
+    return responseSender.sendFile(
+      path.join(
+        process.cwd(),
+        'uploads/blog-entry-header-images/' + imageFileName,
+      ),
+    );
   }
 
   async generateSlug(title: string): Promise<string> {
