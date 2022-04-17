@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
+import { map } from 'rxjs';
 import { User } from 'src/user/models/user.interface';
 import { UserService } from 'src/user/service/user.service';
 import { Repository } from 'typeorm';
@@ -36,6 +42,24 @@ export class BlogService {
 
   async findAll(): Promise<BlogEntry[]> {
     return this.blogRepository.find({ relations: ['author'] });
+  }
+
+  async paginateAll(
+    options: IPaginationOptions,
+  ): Promise<Pagination<BlogEntry>> {
+    return paginate<BlogEntry>(this.blogRepository, options, {
+      relations: ['author'],
+    });
+  }
+
+  async paginateByUser(
+    options: IPaginationOptions,
+    userId: number,
+  ): Promise<Pagination<BlogEntry>> {
+    return paginate<BlogEntry>(this.blogRepository, options, {
+      relations: ['author'],
+      where: [{ author: userId }],
+    });
   }
 
   async findByUser(userId: number): Promise<BlogEntry[]> {

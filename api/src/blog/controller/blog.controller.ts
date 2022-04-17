@@ -15,7 +15,9 @@ import { BlogEntry } from '../ model/blog-entry.interface';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
 import { BlogService } from '../service/blog.service';
 
-@Controller('blogs')
+export const BLOG_ENTRIES_URL = 'http://localhost:3000/api/blog-entries';
+
+@Controller('blog-entries')
 export class BlogController {
   constructor(private blogService: BlogService) {}
 
@@ -47,6 +49,9 @@ export class BlogController {
     return await this.blogService.deleteOne(blogEntryId);
   }
 
+  /*
+  Old version of Get All Blog Entries. Replaced by pageable version
+
   @Get()
   async findAllBlogEntries(
     @Query('userId') userId: number,
@@ -56,6 +61,37 @@ export class BlogController {
     } else {
       return await this.blogService.findAll();
     }
+  }
+  */
+
+  @Get()
+  async index(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    limit = limit > 100 ? 100 : limit;
+    return await this.blogService.paginateAll({
+      limit: Number(limit),
+      page: Number(page),
+      route: BLOG_ENTRIES_URL,
+    });
+  }
+
+  @Get('user/:user')
+  async indexByUser(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Param('user') userId: number,
+  ) {
+    limit = limit > 100 ? 100 : limit;
+    return await this.blogService.paginateByUser(
+      {
+        limit: Number(limit),
+        page: Number(page),
+        route: BLOG_ENTRIES_URL + `/user/${userId}`,
+      },
+      Number(userId),
+    );
   }
 
   @Get(':id')
