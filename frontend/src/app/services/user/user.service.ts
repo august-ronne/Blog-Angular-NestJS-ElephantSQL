@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { User } from '../authentication/authentication.service';
+import { User } from 'src/app/models/user.interface';
 
 export interface UserData {
   items?: User[];

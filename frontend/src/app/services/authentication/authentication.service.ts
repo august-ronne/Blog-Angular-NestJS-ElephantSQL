@@ -3,21 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { KeyedWrite } from '@angular/compiler';
+import { User } from 'src/app/models/user.interface';
 
 export interface LoginForm {
   email: string;
   password: string;
-}
-
-export interface User {
-  id?: number;
-  name?: string;
-  username?: string;
-  email?: string;
-  role?: string;
-  password?: string;
-  passwordConfirm?: string;
-  profileImage?: string;
 }
 
 export const JWT_NAME = 'blog-token';

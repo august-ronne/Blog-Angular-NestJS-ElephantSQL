@@ -37,6 +37,8 @@ import { UsersComponent } from './components/users/users.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UpdateUserProfileComponent } from './components/update-user-profile/update-user-profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { HomeComponent } from './components/home/home.component';
+import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-entries.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     UsersComponent,
     UserProfileComponent,
     UpdateUserProfileComponent,
+    HomeComponent,
+    AllBlogEntriesComponent,
   ],
   imports: [
     BrowserModule,

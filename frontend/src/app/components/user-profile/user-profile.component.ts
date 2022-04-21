@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Subscription } from 'rxjs';
-import { User } from 'src/app/services/authentication/authentication.service';
+import { User } from 'src/app/models/user.interface';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
