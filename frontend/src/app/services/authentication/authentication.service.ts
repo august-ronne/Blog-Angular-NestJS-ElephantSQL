@@ -36,6 +36,10 @@ export class AuthenticationService {
       );
   }
 
+  logout(): void {
+    localStorage.removeItem(JWT_NAME);
+  }
+
   register(user: User): Observable<User> {
     return this.http.post<any>('/api/users/', user).pipe(map((user) => user));
   }

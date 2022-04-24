@@ -11,10 +11,7 @@ import { BlogService } from 'src/app/services/blog/blog.service';
 })
 export class AllBlogEntriesComponent implements OnInit {
   pageEvent: PageEvent = new PageEvent();
-  dataSource: Observable<BlogEntriesPageable> = this.blogService.indexAll(
-    1,
-    10
-  );
+  dataSource: Observable<BlogEntriesPageable> = this.blogService.indexAll(1, 5);
 
   constructor(private blogService: BlogService) {}
 

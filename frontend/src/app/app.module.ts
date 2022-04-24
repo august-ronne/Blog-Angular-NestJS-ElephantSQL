@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
  * External Modules (not authored by AngularJS)
  */
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { MarkdownModule } from 'ngx-markdown';
 
 /**
  * Angular Materials Imports
@@ -39,6 +40,7 @@ import { UpdateUserProfileComponent } from './components/update-user-profile/upd
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HomeComponent } from './components/home/home.component';
 import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-entries.component';
+import { CreateBlogEntryComponent } from './components/create-blog-entry/create-blog-entry.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-
     UpdateUserProfileComponent,
     HomeComponent,
     AllBlogEntriesComponent,
+    CreateBlogEntryComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,8 @@ import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-
     MatCardModule,
     MatProgressBarModule,
     MatIconModule,
+    // External Modules
+    MarkdownModule.forRoot(),
   ],
   providers: [
     JwtHelperService,
