@@ -24,7 +24,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.userId = parseInt(params['id']);
       this.userService
         .findOne(this.userId)
-        .pipe(map((user: User) => (this.user = user)))
+        .pipe(
+          map((user: User) => {
+            console.log(user);
+            this.user = user;
+          })
+        )
         .subscribe();
     });
   }

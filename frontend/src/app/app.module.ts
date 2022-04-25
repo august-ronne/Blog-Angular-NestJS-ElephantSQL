@@ -31,16 +31,17 @@ import { MatIconModule } from '@angular/material/icon';
 /**
  * Component, Guard, and Interceptor Imports
  */
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { UsersComponent } from './components/users/users.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { UpdateUserProfileComponent } from './components/update-user-profile/update-user-profile.component';
-import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { UsersComponent } from './components/user/users/users.component';
+import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
+import { UpdateUserProfileComponent } from './components/user/update-user-profile/update-user-profile.component';
 import { HomeComponent } from './components/home/home.component';
-import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-entries.component';
-import { CreateBlogEntryComponent } from './components/create-blog-entry/create-blog-entry.component';
+import { AllBlogEntriesComponent } from './components/blog-entry/all-blog-entries/all-blog-entries.component';
+import { CreateBlogEntryComponent } from './components/blog-entry/create-blog-entry/create-blog-entry.component';
+import { ViewBlogEntryComponent } from './components/blog-entry/view-blog-entry/view-blog-entry.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { CreateBlogEntryComponent } from './components/create-blog-entry/create-
     HomeComponent,
     AllBlogEntriesComponent,
     CreateBlogEntryComponent,
+    ViewBlogEntryComponent,
   ],
   imports: [
     BrowserModule,

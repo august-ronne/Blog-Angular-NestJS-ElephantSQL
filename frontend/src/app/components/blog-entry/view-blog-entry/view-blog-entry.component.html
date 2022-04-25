@@ -1,0 +1,36 @@
+<div *ngIf="blogEntry$ | async as blogEntry" class="main-div">
+  <mat-card class="card">
+    <mat-card-header>
+      <div style="display: flex; flex-direction: row">
+        <div>
+          <img
+            *ngIf="blogEntry.headerImage; else placeholderImage"
+            src="http://localhost:3000/api/blog-entries/image/{{
+              blogEntry.headerImage
+            }}"
+            class="header-image"
+          />
+          <ng-template #placeholderImage>
+            <img
+              src="../../../assets/placeholders/blog-entry-header-image-placeholder.png"
+              class="header-image"
+            />
+          </ng-template>
+        </div>
+        <div style="margin-left: 20px">
+          <h1>{{ blogEntry.title }}</h1>
+          <h2>{{ blogEntry.description }}</h2>
+          <h3>Author: {{ blogEntry.author?.name }}</h3>
+          <a routerLink="../../users/{{ blogEntry.author?.id }}"
+            >Go to author profile</a
+          >
+        </div>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <markdown [data]="blogEntry.body" class="variable-binding"></markdown>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

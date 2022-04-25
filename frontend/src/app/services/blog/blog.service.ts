@@ -12,6 +12,10 @@ import {
 export class BlogService {
   constructor(private http: HttpClient) {}
 
+  findOneBlogEntry(blogEntryId: number): Observable<BlogEntry> {
+    return this.http.get<BlogEntry>('/api/blog-entries/' + blogEntryId);
+  }
+
   indexAll(page: number, limit: number): Observable<BlogEntriesPageable> {
     const params = new HttpParams()
       .set('page', String(page))

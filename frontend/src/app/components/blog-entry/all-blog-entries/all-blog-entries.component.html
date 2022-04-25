@@ -1,7 +1,8 @@
 <div style="width: 50%; margin-left: 25%">
   <mat-card
     *ngFor="let blogEntry of (dataSource | async)?.items"
-    style="margin-top: 15px"
+    class="card"
+    routerLink="../blog-entry/{{ blogEntry.id }}"
   >
     <div style="display: flex">
       <div>
