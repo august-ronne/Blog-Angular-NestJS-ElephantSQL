@@ -23,6 +23,20 @@ export class BlogService {
     return this.http.get<BlogEntriesPageable>('/api/blog-entries', { params });
   }
 
+  indexAllByUser(
+    userId: number,
+    page: number,
+    limit: number
+  ): Observable<BlogEntriesPageable> {
+    const params = new HttpParams()
+      .set('page', String(page))
+      .set('limit', String(limit));
+    return this.http.get<BlogEntriesPageable>(
+      '/api/blog-entries/user/' + String(userId),
+      { params }
+    );
+  }
+
   createNewBlogEntry(blogEntry: BlogEntry): Observable<BlogEntry> {
     return this.http.post<BlogEntry>('/api/blog-entries', blogEntry);
   }

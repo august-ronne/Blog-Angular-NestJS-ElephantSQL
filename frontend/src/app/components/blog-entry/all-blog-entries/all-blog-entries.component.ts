@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BlogEntriesPageable } from 'src/app/models/blog-entry.interface';
 import { BlogService } from 'src/app/services/blog/blog.service';
@@ -9,17 +10,20 @@ import { BlogService } from 'src/app/services/blog/blog.service';
   templateUrl: './all-blog-entries.component.html',
   styleUrls: ['./all-blog-entries.component.scss'],
 })
-export class AllBlogEntriesComponent implements OnInit {
+export class AllBlogEntriesComponent {
+  @Input() blogEntries: BlogEntriesPageable | null = null;
+  @Output() paginate: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+
   pageEvent: PageEvent = new PageEvent();
-  dataSource: Observable<BlogEntriesPageable> = this.blogService.indexAll(1, 5);
 
-  constructor(private blogService: BlogService) {}
-
-  ngOnInit(): void {}
+  constructor(private router: Router) {}
 
   onPaginateChange(event: PageEvent) {
-    const page = event.pageIndex + 1;
-    const limit = event.pageSize;
-    this.dataSource = this.blogService.indexAll(page, limit);
+    event.pageIndex = event.pageIndex + 1;
+    this.paginate.emit(event);
+  }
+
+  navigate(id: number) {
+    this.router.navigateByUrl(`blog-entry/${id}`);
   }
 }
