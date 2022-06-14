@@ -29,9 +29,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 
 /**
- * Component, Guard, and Interceptor Imports
+ * Guard, InjectionToken, and Interceptor Imports
  */
+import { WINDOW_PROVIDERS } from './window-token';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+
+/**
+ * Component Imports
+ */
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -78,6 +83,7 @@ import { ViewBlogEntryComponent } from './components/blog-entry/view-blog-entry/
     MarkdownModule.forRoot(),
   ],
   providers: [
+    WINDOW_PROVIDERS,
     JwtHelperService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -3,12 +3,19 @@ import {
   HttpEvent,
   HttpEventType,
 } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { User } from 'src/app/models/user.interface';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { WINDOW } from 'src/app/window-token';
 
 export interface File {
   data: any;
@@ -22,6 +29,8 @@ export interface File {
   styleUrls: ['./update-user-profile.component.scss'],
 })
 export class UpdateUserProfileComponent implements OnInit {
+  origin = this.window.location.origin;
+
   /*
   @ViewChild('fileUpload', { static: false }) fileUpload: ElementRef =
     {} as ElementRef;
@@ -37,7 +46,8 @@ export class UpdateUserProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthenticationService,
-    private userService: UserService
+    private userService: UserService,
+    @Inject(WINDOW) private window: Window
   ) {}
 
   ngOnInit(): void {

@@ -8,9 +8,7 @@
       <div>
         <img
           *ngIf="blogEntry.headerImage; else placeholderImage"
-          src="http://localhost:3000/api/blog-entries/image/{{
-            blogEntry.headerImage
-          }}"
+          src="{{ origin }}/api/blog-entries/image/{{ blogEntry.headerImage }}"
         />
         <ng-template #placeholderImage>
           <img

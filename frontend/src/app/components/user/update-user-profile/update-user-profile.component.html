@@ -6,7 +6,7 @@
           <mat-card-content>
             <img
               *ngIf="form.get('profileImage')?.value"
-              src="http://localhost:3000/api/users/get-profile-image/{{
+              src="{{ origin }}/api/users/get-profile-image/{{
                 form.get('profileImage')?.value
               }}"
             />

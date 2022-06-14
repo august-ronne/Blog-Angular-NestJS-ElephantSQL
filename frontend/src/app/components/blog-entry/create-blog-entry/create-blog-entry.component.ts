@@ -1,9 +1,16 @@
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, map, of, tap } from 'rxjs';
 import { BlogService } from 'src/app/services/blog/blog.service';
+import { WINDOW } from 'src/app/window-token';
 
 export interface File {
   data: any;
@@ -17,6 +24,8 @@ export interface File {
   styleUrls: ['./create-blog-entry.component.scss'],
 })
 export class CreateBlogEntryComponent implements OnInit {
+  origin = this.window.location.origin;
+
   form: FormGroup = new FormGroup({});
   @ViewChild('fileUpload', { static: false }) fileUpload!: ElementRef;
   file: File = {
@@ -28,7 +37,8 @@ export class CreateBlogEntryComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private blogService: BlogService,
-    private router: Router
+    private router: Router,
+    @Inject(WINDOW) private window: Window
   ) {}
 
   ngOnInit(): void {

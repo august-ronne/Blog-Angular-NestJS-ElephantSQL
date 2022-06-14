@@ -6,7 +6,7 @@
           <mat-card-content>
             <img
               *ngIf="form.get('headerImage')?.value"
-              src="http://localhost:3000/api/blog-entries/image/{{
+              src="{{ origin }}/api/blog-entries/image/{{
                 form.get('headerImage')?.value
               }}"
             />
